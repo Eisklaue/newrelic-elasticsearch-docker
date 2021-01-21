@@ -7,6 +7,8 @@
       "username": "%USERNAME%",
       "password": "%PASSWORD%",
       "protocol": "%PROTOCOL%",
+      "use_ssl": "%SSL%",
+      "ca_bundle_file": "%CAFILE%",
       "_basePath": "Optional. API path on server. Default '/'. Rename to 'basePath' if you need to customize it"
     }
   ]

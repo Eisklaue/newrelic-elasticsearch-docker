@@ -8,6 +8,8 @@ if [ "$1" = 'newrelic-elasticsearch' ]; then
 	port=${ES_PORT:-9200}
 	username=${ES_USER}
 	password=${ES_PASSWD}
+	ssl=${ES_SSL}
+	cafile=${ES_CA_FILE}
 	reconnects=${ES_RECONNECTS:-10}
         protocol=${ES_PROTOCOL:-http}
 
@@ -19,13 +21,15 @@ if [ "$1" = 'newrelic-elasticsearch' ]; then
 	sed -i "s/%NAME%/$name/g" plugin.json
 	sed -i "s/%USERNAME%/$username/g" plugin.json
 	sed -i "s/%PASSWORD%/$password/g" plugin.json
+	sed -i "s/%SSL%/$ssl/g" plugin.json
+	sed -i "s/%CAFILE%/$cafile/g" plugin.json
         sed -i "s/%PROTOCOL%/$protocol/g" plugin.json
 	cp plugin.json `find . -path './plugins/me.snov.newrelic-elasticsearch/*/config/plugin.json'`
 
 	for i in `seq 1 $reconnects`
 	do
 	 	echo -n "Trying $protocol://$host:$port... "
-		if curl --silent "$protocol://$host:$port" > /dev/null
+		if curl --cacert $ES_CA_FILE --silent "$protocol://$host:$port" > /dev/null
 		then
 	 		echo "OK"
 			break
